@@ -14,16 +14,12 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @CrossOrigin(origins = arrayOf("*"), allowedHeaders = arrayOf("*"))
 class check(@Autowired val poemRepo: PoemRepo,@Autowired val contentRepo: ContentRepo) {
-    var m= mutableMapOf<String,Int>("Arun" to 1,"Suraj" to 2)
-
-    var m1=m;
-    @GetMapping("/getAll")
-    fun hello(): MutableList<Test> {
-//        println(poemRepo.findAll())
-        return poemRepo.findAll();
-    }
     var a="";
     var b=0;
+    @GetMapping("/")
+    fun addContent() : MutableList<Content> {
+        return contentRepo.findAll();
+    }
     @GetMapping("/getone/{id}")
     fun getOne( @PathVariable id:Int ) : Content? {
         contentRepo.findAll().map{
@@ -36,24 +32,12 @@ class check(@Autowired val poemRepo: PoemRepo,@Autowired val contentRepo: Conten
     @DeleteMapping("/delete/{id}")
     fun deleteOne( @PathVariable id:Int ) : Boolean? {
         contentRepo.deleteById(id)
-        println("deleted")
         return true;
-    }
-
-    @PostMapping("/add")
-    fun addMem(@RequestBody test1 :Test ) : Test{
-        m[test1.name]=test1.num;
-        return poemRepo.save(test1);
     }
     @PostMapping("/update/{id}")
     fun update(@RequestBody content: Content):Boolean{
-        println(content)
         contentRepo.save(content);
         return true;
-    }
-    @GetMapping("/getcontent")
-    fun addContent() : MutableList<Content> {
-        return contentRepo.findAll();
     }
     @GetMapping("/getcontent/{type}")
     fun addContent(@PathVariable type: String) : MutableList<Content> {
@@ -78,7 +62,6 @@ class check(@Autowired val poemRepo: PoemRepo,@Autowired val contentRepo: Conten
     @PostMapping("/content")
     fun addContent(@RequestBody content: Content) : Content{
         content.id=contentRepo.findAll().size+2;
-        println(content.id);
         return contentRepo.save(content);
     }
 }
